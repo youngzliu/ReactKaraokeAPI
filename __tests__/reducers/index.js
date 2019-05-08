@@ -5,6 +5,7 @@ import rootReducer from "./../../src/reducers/";
 import { createStore } from "redux";
 import * as actions from "./../../src/actions";
 
+/*eslint-disable */
 describe("Karaoke App", () => {
   const { initialState, types } = constants;
   const store = createStore(rootReducer, initialState);
@@ -28,6 +29,18 @@ describe("Karaoke App", () => {
         lyricChangeReducer(initialState.songsById, actions.restartSong(1))[1]
           .arrayPosition
       ).toEqual(0);
+    });
+
+    it("Should update state when API lyrics are being requested.", () => {
+      const action = actions.requestSong("crocodile rock", 18);
+      const newStateEntry = {
+        isFetching: true,
+        title: action.title,
+        songId: action.songId
+      };
+      expect(
+        lyricChangeReducer(initialState.songsById, action)[action.songId]
+      ).toEqual(newStateEntry);
     });
   });
 
@@ -60,3 +73,4 @@ describe("Karaoke App", () => {
     });
   });
 });
+/*eslint-enable */
